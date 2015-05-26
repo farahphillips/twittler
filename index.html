@@ -3,25 +3,46 @@
   <head>
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
+    <link rel="stylesheet" type="text/css" href="stylesheet.css">
+    <title>twittler home</title>
   </head>
   <body>
+
+    <div class="container">
+      <h2>home</h2>
+      <ul class="feed"></ul>
+      <center><button>more</button></center> 
+    </div>
+
     <script>
-
       $(document).ready(function(){
-        var $body = $('body');
-        $body.html('');
 
-        var index = streams.home.length - 1;
-        while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
-          index -= 1;
+        var $feed = $('.feed');
+        var tweets = streams.home;
+
+        // function: tweet generator
+        function tweetGen(collection, location){
+          location.html('');
+          collection.forEach(function(tweet) {
+            var output = $('<li class="tweet"><a class="username" href="#">@<span>' + tweet.user + '</span></a> ' + tweet.message + ' [' + tweet.created_at + "]" + '</li>');
+            output.prependTo(location);
+          });
         }
 
-      });
+        // function: refresh feed
+        function refresh() {
+          tweetGen(tweets, $feed);
+          if (tweets.length > 10) {
+            for (var i = tweets.length - 10; i > 0; i--) {
+              tweets.shift();              
+            }
+          }
+        }
 
+        tweetGen(tweets, $feed); // loads initial tweets
+        $('button').on("click", refresh); // loads more tweets
+
+      });
     </script>
   </body>
 </html>
