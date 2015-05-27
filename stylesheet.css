@@ -2,11 +2,13 @@ body {
     background-color: rgba(255, 31, 97, 1);
     color: rgba(255, 255, 255, 1);
     text-align: left;
+    list-style-type: none;
 }
 
 div {
     background-color: rgba(255, 169, 148, 1);
     color: rgba(255, 31, 97, 1);
+    font: 16px sans-serif;
     margin: 20px;
     width: 500px;
     padding: 10px;
@@ -19,9 +21,10 @@ div {
     text-align: center;
 }
 
-#feed {
-    font: 16px sans-serif;
-    list-style-type: none;
+#timeline {
+    background-color: rgba(255, 31, 97, 1);
+    color: rgba(255, 169, 148, 1);
+    font: 12px sans-serif;
 }
 
 a:link {
@@ -34,11 +37,6 @@ a:hover {
 
 a:visited {
     color: rgba(255, 31, 97, .5);
-}
-
-#timeline {
-    background-color: rgba(255, 31, 97, 1);
-    color: rgba(255, 169, 148, 1);
 }
 
 button {

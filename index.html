@@ -7,32 +7,35 @@
     <title>twittler home</title>
   </head>
   <body>
-      <div class="home" id="header"><strong>home</strong></div>
-      <div class="home" id="feed"></div>
-      <center><button>more</button></center>
-      <div class="home" id="timeline"></div>
+    <div class="home" id="header"><strong>home</strong></div>
+    <div class="home" id="feed"></div>
+    <center><button>more</button></center>
+    <div class="home" id="timeline"></div>
+
     <script>
       $(document).ready(function(){
-
-        var $feed = $('#feed');
-        var $timeline = $('#timeline');
+          
+        var feed = $("#feed");
+        var timeline = $("#timeline");
         var tweets = streams.home;
+        var users = streams.users;
 
-        // function: tweet generator
-        function tweetGen(collection, location){
-          location.html('');
-          collection.forEach(function(tweet) {
-            var $tweets = $('<li class="tweet">' + tweet.user + '</li>');
-            $tweets.html('<a class="username" href="#"><strong>@' + tweet.user + '</strong></a>' + ": " + tweet.message + "<br>" + tweet.created_at);
-            $tweets.prependTo(location);
-          });
+        // generate tweets
+        function tweetGen(){
+          var index = tweets.length - 1;
+          while(index >= 0){
+            var tweet = tweets[index];
+            var twittler = $('<li class="list">' + tweet.user + '</li>');
+            twittler.html('<a href="#" data-id="'+ tweet.user +'">' + '@' + tweet.user + ': ' + '</a>' + " " + tweet.message + "<br>" + tweet.created_at);
+            twittler.prependTo(feed);
+            tweets.splice(index,1);
+            index -= 1;
+          }
         }
 
-        // user timeline tweets
-
-        // function: refresh feed
+        // function: clear feed
         function clear() {
-          tweetGen(tweets, $feed);
+          tweetGen();
           if (tweets.length > 10) {
             for (var i = tweets.length - 10; i > 0; i--) {
               tweets.shift();              
@@ -40,10 +43,21 @@
           }
         }
 
-        tweetGen(tweets, $feed); // loads initial tweets
-        $('button').on("click", clear); // loads more tweets
+        // click on user for timeline
+        $(feed).on("click","a", function() {
+          document.getElementById("timeline").innerHTML = "";
+          var id = $(this).data("id");
+          for (var i = 0; i < users[id].length; i++) {
+            var message = users[id][i].message;
+            var userTweet = $('<li>' + "@" + id + ": " + message + '</li>');
+            userTweet.appendTo(timeline);
+          }
+        });
 
-      });
+        tweetGen(); // loads initial tweets
+        $("button").on("click", clear); // button for more tweets
+
+    });
     </script>
   </body>
 </html>
