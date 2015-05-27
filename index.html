@@ -7,30 +7,31 @@
     <title>twittler home</title>
   </head>
   <body>
-
-    <div class="container">
-      <h2>home</h2>
-      <ul class="feed"></ul>
-      <center><button>more</button></center> 
-    </div>
-
+      <div class="home" id="header"><strong>home</strong></div>
+      <div class="home" id="feed"></div>
+      <center><button>more</button></center>
+      <div class="home" id="timeline"></div>
     <script>
       $(document).ready(function(){
 
-        var $feed = $('.feed');
+        var $feed = $('#feed');
+        var $timeline = $('#timeline');
         var tweets = streams.home;
 
         // function: tweet generator
         function tweetGen(collection, location){
           location.html('');
           collection.forEach(function(tweet) {
-            var output = $('<li class="tweet"><a class="username" href="#">@<span>' + tweet.user + '</span></a> ' + tweet.message + ' [' + tweet.created_at + "]" + '</li>');
-            output.prependTo(location);
+            var $tweets = $('<li class="tweet">' + tweet.user + '</li>');
+            $tweets.html('<a class="username" href="#"><strong>@' + tweet.user + '</strong></a>' + ": " + tweet.message + "<br>" + tweet.created_at);
+            $tweets.prependTo(location);
           });
         }
 
+        // user timeline tweets
+
         // function: refresh feed
-        function refresh() {
+        function clear() {
           tweetGen(tweets, $feed);
           if (tweets.length > 10) {
             for (var i = tweets.length - 10; i > 0; i--) {
@@ -40,7 +41,7 @@
         }
 
         tweetGen(tweets, $feed); // loads initial tweets
-        $('button').on("click", refresh); // loads more tweets
+        $('button').on("click", clear); // loads more tweets
 
       });
     </script>
